@@ -90,19 +90,3 @@ class Home2 extends StatelessWidget {
     model.notifyListeners();
   }
 }
-
-class MyFlowDelegate extends FlowDelegate {
-  @override
-  void paintChildren(FlowPaintingContext context) {
-    context.paintChild(0, transform: Matrix4.rotationX(2 * pi));
-  }
-
-  @override
-  bool shouldRepaint(covariant FlowDelegate oldDelegate) => false;
-  /*Flow(
-                        delegate: MyFlowDelegate(),
-                        children: [
-                          Container(width: 100, height: 100, color: Colors.white),
-                        ],
-                      )*/
-}
