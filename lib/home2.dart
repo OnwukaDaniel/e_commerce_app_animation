@@ -25,7 +25,7 @@ class Home2 extends StatelessWidget {
             title: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                'FATCO',
+                'FAT-CO',
                 style: TextStyle(fontWeight: FontWeight.w900, fontSize: 25),
               ),
             ),
