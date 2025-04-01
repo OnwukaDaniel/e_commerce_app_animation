@@ -16,7 +16,6 @@ class Home2 extends StatelessWidget {
     final r = (size.width * (isLandScape ? .6 : .9));
     final dialCanvasHeight = size.height - (kToolbarHeight * 4);
 
-    //return 0.h;
     return ViewModelBuilder.reactive(
       viewModelBuilder: () => HomeViewmodel(),
       onViewModelReady: (model) => model.init(context),
