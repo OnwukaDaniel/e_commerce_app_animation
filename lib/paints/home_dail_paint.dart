@@ -15,7 +15,6 @@ class HomeDailPaint extends CustomPainter {
       radius,
       paint,
     );
-
   }
 
   @override
