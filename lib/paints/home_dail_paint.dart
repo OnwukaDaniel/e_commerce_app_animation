@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:ui' as ui;
 
 class HomeDailPaint extends CustomPainter {
   final Size size;
