@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:e_commerce_app/extensions/size_extension.dart';
 import 'package:e_commerce_app/paints/home_dail_paint2.dart';
 import 'package:e_commerce_app/viewmodel/home_viewmodel.dart';
