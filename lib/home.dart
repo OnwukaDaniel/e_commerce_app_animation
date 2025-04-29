@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:e_commerce_app/viewmodel/home_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
