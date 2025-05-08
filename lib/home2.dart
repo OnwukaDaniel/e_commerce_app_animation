@@ -23,7 +23,6 @@ class Home2 extends StatelessWidget {
       viewModelBuilder: () => HomeViewmodel(),
       onViewModelReady: (model) => model.init(context),
       builder: (context, model, _) {
-        //debugPrint('------------ ${size.height - (kToolbarHeight * 2)}');
         return Scaffold(
           appBar: AppBar(
             title: Padding(
