@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:e_commerce_app/mixins/paint_mixin.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
