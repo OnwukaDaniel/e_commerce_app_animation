@@ -1,9 +1,7 @@
-import 'package:e_commerce_app/enum/main_category_enum.dart';
 import 'package:e_commerce_app/extensions/size_extension.dart';
 import 'package:e_commerce_app/paints/home_dail_paint.dart';
 import 'package:e_commerce_app/viewmodel/home_viewmodel.dart';
 import 'package:e_commerce_app/views/system_app_bar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
@@ -13,9 +11,11 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    double radius = size.width * 1.0;
 
     return ViewModelBuilder.reactive(
       viewModelBuilder: () => HomeViewmodel(),
+      onViewModelReady: (model) => model.init(context),
       builder: (context, model, _) {
         return Scaffold(
           appBar: AppBar(
@@ -40,14 +40,55 @@ class Home extends StatelessWidget {
             children: [
               SystemAppBar(),
               (kToolbarHeight * 1.5).h,
-              CustomPaint(
-                size: Size(size.width, size.height - (kToolbarHeight * 2)),
-                painter: HomeDailPaint(),
+              SizedBox(
+                height: size.height - (kToolbarHeight * 2),
+                child: GestureDetector(
+                  onHorizontalDragUpdate: (dragDetails) {
+                    _onHorizontalDragUpdate(dragDetails, model);
+                  },
+                  child: Stack(
+                    children: [
+                      CustomPaint(
+                        size: Size(radius, size.height - (kToolbarHeight * 2)),
+                        painter: HomeDailPaint(),
+                      ),
+                      ...model.homeProducts.asMap().map((index, e) {
+                        return MapEntry(
+                          index,
+                          Builder(
+                            builder: (context) {
+                              final imgDiameter = 120.0;
+                              return Transform.translate(
+                                offset: Offset(
+                                  model.focusProductCat.dx - (imgDiameter * .5),
+                                  model.focusProductCat.dy,
+                                ),
+                                child: Container(
+                                  clipBehavior: Clip.hardEdge,
+                                  decoration: BoxDecoration(shape: BoxShape.circle),
+                                  child: Image.asset(
+                                    model.homeProducts[index].icon,
+                                    width: imgDiameter,
+                                  ),
+                                ),
+                              );
+                            }
+                          ),
+                        );
+                      }).values,
+                    ],
+                  ),
+                ),
               ),
             ],
           ),
         );
       },
     );
+  }
+
+  _onHorizontalDragUpdate(DragUpdateDetails details, HomeViewmodel model) {
+    model.angle += details.delta.dx * 0.01;
+    model.notifyListeners();
   }
 }
