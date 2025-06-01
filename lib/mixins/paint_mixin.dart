@@ -16,7 +16,7 @@ mixin PaintMixin {
     double dx,
   ) {
     final imgRadius = 36.0;
-    final targetAngles = [toRad(250), toRad(15)];
+    // final targetAngles = [toRad(250), toRad(15)];
     final imagesRadius = radius - 55;
     final double anglePerImage = toRad(imgRadius * .7);
     final double angularDx = dx / imagesRadius; // Convert drag pixels to radians
