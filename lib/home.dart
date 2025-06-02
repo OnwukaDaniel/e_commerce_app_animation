@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:e_commerce_app/extensions/size_extension.dart';
 import 'package:e_commerce_app/paints/home_dail_paint.dart';
 import 'package:e_commerce_app/viewmodel/home_viewmodel.dart';
@@ -11,12 +13,13 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    double radius = size.width * 1.0;
+    double radius = size.width * 1;
 
     return ViewModelBuilder.reactive(
       viewModelBuilder: () => HomeViewmodel(),
       onViewModelReady: (model) => model.init(context),
       builder: (context, model, _) {
+        debugPrint('------------ ${size.height - (kToolbarHeight * 2)}');
         return Scaffold(
           appBar: AppBar(
             title: Padding(
@@ -48,31 +51,46 @@ class Home extends StatelessWidget {
                   },
                   child: Stack(
                     children: [
-                      CustomPaint(
-                        size: Size(radius, size.height - (kToolbarHeight * 2)),
-                        painter: HomeDailPaint(),
+                      SizedBox(
+                        height: size.height - (kToolbarHeight * 2),
+                        width: radius,
+                        child: CustomPaint(
+                          size: Size(radius, size.height - (kToolbarHeight * 2)),
+                          painter: HomeDailPaint(),
+                        ),
                       ),
                       ...model.homeProducts.asMap().map((index, e) {
                         return MapEntry(
                           index,
                           Builder(
                             builder: (context) {
-                              final imgDiameter = 120.0;
+                              Offset center = Offset(
+                                size.width * .35,
+                                size.height * .25,
+                              );
+
+                              final r = size.width / 2;
+                              final s =
+                                  model.focusProductCat.dx +
+                                  (index != 0
+                                      ? (index * model.gapDifference) +
+                                          (index * model.imgDiameter)
+                                      : 0.0) + model.angle;
+                              final a = (s / r) - (pi / 2);
                               return Transform.translate(
-                                offset: Offset(
-                                  model.focusProductCat.dx - (imgDiameter * .5),
-                                  model.focusProductCat.dy,
-                                ),
+                                offset: center + Offset.fromDirection(a, r),
                                 child: Container(
                                   clipBehavior: Clip.hardEdge,
-                                  decoration: BoxDecoration(shape: BoxShape.circle),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                  ),
                                   child: Image.asset(
                                     model.homeProducts[index].icon,
-                                    width: imgDiameter,
+                                    width: model.imgDiameter,
                                   ),
                                 ),
                               );
-                            }
+                            },
                           ),
                         );
                       }).values,
@@ -88,7 +106,24 @@ class Home extends StatelessWidget {
   }
 
   _onHorizontalDragUpdate(DragUpdateDetails details, HomeViewmodel model) {
-    model.angle += details.delta.dx * 0.01;
+    model.angle += details.delta.dx;
+    debugPrint('------------ ${model.angle}');
     model.notifyListeners();
   }
+}
+
+class MyFlowDelegate extends FlowDelegate {
+  @override
+  void paintChildren(FlowPaintingContext context) {
+    context.paintChild(0, transform: Matrix4.rotationX(2 * pi));
+  }
+
+  @override
+  bool shouldRepaint(covariant FlowDelegate oldDelegate) => false;
+  /*Flow(
+                        delegate: MyFlowDelegate(),
+                        children: [
+                          Container(width: 100, height: 100, color: Colors.white),
+                        ],
+                      )*/
 }

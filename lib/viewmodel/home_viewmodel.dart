@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:e_commerce_app/data/home_product_data.dart';
@@ -44,10 +45,12 @@ class HomeViewmodel extends BaseViewModel {
     ),
   ];
 
-  double angle = 0;
+  double angle = -142;
+  final imgDiameter = 120.0;
   Offset focusProductCat = Offset(0, 0);
 
   late HomeProductData _selectedProduct;
+  double gapDifference = 20;
 
   HomeProductData get selectedProduct => _selectedProduct;
 
@@ -55,7 +58,7 @@ class HomeViewmodel extends BaseViewModel {
     final s = MediaQuery.of(context).size;
     final hWidth = s.width * .5;
     _selectedProduct = homeProducts.first;
-    focusProductCat = Offset(hWidth, 1);
+    focusProductCat = Offset(hWidth - (imgDiameter * .5), 1);
   }
 
   setMainCategory(MainCategoryEnum value) {
