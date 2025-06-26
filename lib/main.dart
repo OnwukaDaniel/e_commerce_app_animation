@@ -1,5 +1,4 @@
 import 'package:device_preview/device_preview.dart';
-import 'package:e_commerce_app/home.dart';
 import 'package:e_commerce_app/home2.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
