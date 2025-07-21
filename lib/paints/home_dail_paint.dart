@@ -2,16 +2,21 @@ import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 
 class HomeDailPaint extends CustomPainter {
+  final Size size;
+  final double radius;
+  HomeDailPaint(this.size , this.radius);
 
   @override
-  void paint(Canvas canvas, Size size) {
+  void paint(Canvas canvas, Size s) {
     final paint = Paint()..color = Colors.deepPurpleAccent;
+    bool isLandScape = size.width > size.height;
 
     canvas.drawCircle(
-      Offset(size.width * .5, size.height * .5),
-      size.width,
+      Offset(size.width * .5, s.height * (isLandScape ? 1.7 : .5)),
+      radius,
       paint,
     );
+
   }
 
   @override

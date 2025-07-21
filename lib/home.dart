@@ -13,7 +13,8 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    double radius = size.width * 1;
+    bool isLandScape = size.width > size.height;
+    final r = (size.width * (isLandScape ? .6 : .351));
 
     return ViewModelBuilder.reactive(
       viewModelBuilder: () => HomeViewmodel(),
@@ -53,10 +54,13 @@ class Home extends StatelessWidget {
                     children: [
                       SizedBox(
                         height: size.height - (kToolbarHeight * 2),
-                        width: radius,
+                        width: r,
                         child: CustomPaint(
-                          size: Size(radius, size.height - (kToolbarHeight * 2)),
-                          painter: HomeDailPaint(),
+                          size: Size(
+                            size.width,
+                            size.height - (kToolbarHeight * 2),
+                          ),
+                          painter: HomeDailPaint(size, r),
                         ),
                       ),
                       ...model.homeProducts.asMap().map((index, e) {
@@ -66,19 +70,21 @@ class Home extends StatelessWidget {
                             builder: (context) {
                               Offset center = Offset(
                                 size.width * .35,
-                                size.height * .25,
+                                (size.height - kToolbarHeight * 2) *
+                                    (isLandScape ? 1.7 : .35),
                               );
 
-                              final r = size.width / 2;
                               final s =
                                   model.focusProductCat.dx +
                                   (index != 0
                                       ? (index * model.gapDifference) +
                                           (index * model.imgDiameter)
-                                      : 0.0) + model.angle;
+                                      : 0.0) +
+                                  model.angle;
                               final a = (s / r) - (pi / 2);
                               return Transform.translate(
-                                offset: center + Offset.fromDirection(a, r),
+                                offset:
+                                    center + Offset.fromDirection(a, r - 24),
                                 child: Container(
                                   clipBehavior: Clip.hardEdge,
                                   decoration: BoxDecoration(
@@ -126,4 +132,35 @@ class MyFlowDelegate extends FlowDelegate {
                           Container(width: 100, height: 100, color: Colors.white),
                         ],
                       )*/
+}
+
+class ArcMenu extends StatelessWidget {
+  final double radius = 120;
+  final List<Widget> items = [
+    Icon(Icons.directions_walk, size: 40),
+    Icon(Icons.clean_hands_sharp, size: 40),
+    Icon(Icons.person, size: 40),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 300,
+      height: 200,
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: List.generate(items.length, (index) {
+          double angle = pi / (items.length - 1) * index;
+          double x = radius * cos(angle);
+          double y = radius * sin(angle);
+
+          return Positioned(
+            left: 150 + x - 20,
+            bottom: y,
+            child: CircleAvatar(child: items[index]),
+          );
+        }),
+      ),
+    );
+  }
 }

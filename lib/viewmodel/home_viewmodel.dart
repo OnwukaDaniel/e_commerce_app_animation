@@ -1,10 +1,9 @@
-import 'dart:math';
-import 'dart:ui';
+import 'dart:ui' as ui;
 
 import 'package:e_commerce_app/data/home_product_data.dart';
 import 'package:e_commerce_app/enum/main_category_enum.dart';
+import 'package:e_commerce_app/extensions/image_extension.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:stacked/stacked.dart';
 
 class HomeViewmodel extends BaseViewModel {
@@ -45,12 +44,12 @@ class HomeViewmodel extends BaseViewModel {
     ),
   ];
 
-  double angle = -142;
+  double angle = -550;
   final imgDiameter = 120.0;
   Offset focusProductCat = Offset(0, 0);
 
   late HomeProductData _selectedProduct;
-  double gapDifference = 20;
+  double gapDifference = 10;
 
   HomeProductData get selectedProduct => _selectedProduct;
 
@@ -69,5 +68,13 @@ class HomeViewmodel extends BaseViewModel {
   setAngle(double input) {
     angle = input;
     notifyListeners();
+  }
+
+  Future<List<ui.Image>> getImages(List<String> images) async {
+    List<ui.Image> finalImages = [];
+    for(final img in images) {
+      finalImages.add(await img.getImage);
+    }
+    return finalImages;
   }
 }
