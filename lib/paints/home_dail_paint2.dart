@@ -31,14 +31,14 @@ class HomeDailPaint2 extends CustomPainter with PaintMixin {
           ..strokeCap = StrokeCap.round
           ..color = Colors.yellow
           ..style = PaintingStyle.stroke
-          ..strokeWidth = 12;
+          ..strokeWidth = 8;
     bool isLandScape = size.width > size.height;
     final circleOffset = Offset(
       size.width * .5,
       s.height * (isLandScape ? 1.7 : .5),
     );
     canvas.drawCircle(circleOffset, radius, paint);
-    final arcRect = Rect.fromCircle(center: circleOffset, radius: radius);
+    final arcRect = Rect.fromCircle(center: circleOffset, radius: radius - 2);
     canvas.drawArc(arcRect, toRad(250), toRad(15), false, strokePaint);
     paintImages(s, canvas, images, radius, gapDifference, imgDiameter, angle, dx);
   }
