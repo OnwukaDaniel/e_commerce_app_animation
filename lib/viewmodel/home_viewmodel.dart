@@ -42,10 +42,30 @@ class HomeViewmodel extends BaseViewModel {
         HomeSubProduct('Shoe 202', 'assets/suit4.png', 52900),
       ],
     ),
+    HomeProductData(
+      name: 'Cardigan',
+      icon: 'assets/cardigan_icon.png',
+      subProduct: [
+        HomeSubProduct('Cardigan X', 'assets/cardigan1.png', 42000),
+        HomeSubProduct('Saint Slaves', 'assets/cardigan2.png', 42000),
+        HomeSubProduct('Dovan Slips', 'assets/cardigan3.png', 32900),
+        HomeSubProduct('Shoe 202', 'assets/cardigan4.png', 52900),
+      ],
+    ),
+    HomeProductData(
+      name: 'Suit',
+      icon: 'assets/suit_icon.png',
+      subProduct: [
+        HomeSubProduct('Shoe 101', 'assets/suit1.png', 42000),
+        HomeSubProduct('Canvas 27', 'assets/suit2.png', 42000),
+        HomeSubProduct('Dovan Slips', 'assets/suit3.png', 32900),
+        HomeSubProduct('Shoe 202', 'assets/suit4.png', 52900),
+      ],
+    ),
   ];
 
   double angle = -550;
-  final imgDiameter = 120.0;
+  final imgDiameter = 100.0;
   Offset focusProductCat = Offset(0, 0);
 
   late HomeProductData _selectedProduct;

@@ -15,8 +15,10 @@ class Home2 extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     bool isLandScape = size.width > size.height;
-    final r = (size.width * (isLandScape ? .6 : .61));
+    final r = (size.width * (isLandScape ? .6 : .9));
+    final dialCanvasHeight = size.height - (kToolbarHeight * 4);
 
+    //return 0.h;
     return ViewModelBuilder.reactive(
       viewModelBuilder: () => HomeViewmodel(),
       onViewModelReady: (model) => model.init(context),
@@ -42,41 +44,41 @@ class Home2 extends StatelessWidget {
             ],
           ),
           body: ListView(
+            physics:
+                isLandScape
+                    ? BouncingScrollPhysics()
+                    : NeverScrollableScrollPhysics(),
             children: [
               SystemAppBar(),
               (kToolbarHeight * 1.5).h,
-              SizedBox(
-                height: size.height - (kToolbarHeight * 2),
-                child: GestureDetector(
-                  onHorizontalDragUpdate: (dragDetails) {
-                    _onHorizontalDragUpdate(dragDetails, model);
-                  },
-                  child: SizedBox(
-                    height: size.height - (kToolbarHeight * 2),
-                    width: r,
-                    child: FutureBuilder(
-                      future: model.getImages(
-                        model.homeProducts.map((e) => e.icon).toList(),
-                      ),
-                      builder: (_, snapshot) {
-                        if (snapshot.data == null) return 0.w;
-                        return CustomPaint(
-                          size: Size(
-                            size.width,
-                            size.height - (kToolbarHeight * 2),
-                          ),
-                          painter: HomeDailPaint2(
-                            size,
-                            r,
-                            snapshot.data!,
-                            model.focusProductCat.dx,
-                            model.gapDifference,
-                            model.imgDiameter,
-                            model.angle
-                          ),
-                        );
-                      },
+              GestureDetector(
+                onHorizontalDragUpdate: (dragDetails) {
+                  _onHorizontalDragUpdate(dragDetails, model);
+                },
+                onVerticalDragUpdate: (dragDetails) {
+                  _onHorizontalDragUpdate(dragDetails, model);
+                },
+                child: SizedBox(
+                  height: dialCanvasHeight,
+                  width: r,
+                  child: FutureBuilder(
+                    future: model.getImages(
+                      model.homeProducts.map((e) => e.icon).toList(),
                     ),
+                    builder: (_, snapshot) {
+                      if (snapshot.data == null) return 0.w;
+                      return CustomPaint(
+                        painter: HomeDailPaint2(
+                          size,
+                          r,
+                          snapshot.data!,
+                          model.focusProductCat.dx,
+                          model.gapDifference,
+                          model.imgDiameter,
+                          model.angle,
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),
