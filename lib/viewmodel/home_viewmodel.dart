@@ -1,12 +1,14 @@
+import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:e_commerce_app/data/home_product_data.dart';
 import 'package:e_commerce_app/enum/main_category_enum.dart';
 import 'package:e_commerce_app/extensions/image_extension.dart';
+import 'package:e_commerce_app/mixins/paint_mixin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
 
-class HomeViewmodel extends BaseViewModel {
+class HomeViewmodel extends BaseViewModel with PaintMixin {
   MainCategoryEnum _selectedMainCategory = MainCategoryEnum.limited;
 
   MainCategoryEnum get selectedMainCategory => _selectedMainCategory;
@@ -64,7 +66,7 @@ class HomeViewmodel extends BaseViewModel {
     ),
   ];
 
-  double angle = -550;
+  double angle = .5;
   final imgDiameter = 100.0;
   Offset focusProductCat = Offset(0, 0);
 

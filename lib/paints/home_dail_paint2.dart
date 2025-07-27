@@ -38,17 +38,16 @@ class HomeDailPaint2 extends CustomPainter with PaintMixin {
       s.height * (isLandScape ? 1.7 : .5),
     );
     canvas.drawCircle(circleOffset, radius, paint);
+
+    //4.363323129985824 - 4.45 - 4.6
     final arcRect = Rect.fromCircle(center: circleOffset, radius: radius - 2);
-    canvas.drawArc(arcRect, toRad(250), toRad(15), false, strokePaint);
+    canvas.drawArc(arcRect, toRad(250), toRad(13), false, strokePaint);
+
     paintImages(s, canvas, images, radius, gapDifference, imgDiameter, angle, dx);
   }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return true;
-  }
-
-  double toRad(double degrees) {
-    return degrees * (pi / 180);
   }
 }

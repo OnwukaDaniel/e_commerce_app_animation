@@ -1,15 +1,29 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'dart:ui' as ui ;
+import 'dart:ui' as ui;
 
 mixin PaintMixin {
-  void paintImages(Size s, Canvas canvas, List<ui.Image> images, double radius, double gapDifference, double imgDiameter, double angle, double dx) {
-    final imgRadius = radius - 55;
+  final double tolerance = 0.1; // ~5.7 degrees
+
+  void paintImages(
+    Size s,
+    Canvas canvas,
+    List<ui.Image> images,
+    double radius,
+    double gapDifference,
+    double imgDiameter,
+    double angle,
+    double dx,
+  ) {
+    final imgRadius = 36.0;
+    final targetAngles = [toRad(250), toRad(15)];
+    final imagesRadius = radius - 55;
+    final double anglePerImage = toRad(imgRadius * .7);
+    final double angularDx = dx / imagesRadius; // Convert drag pixels to radians
+
     for (int i = 0; i < images.length; i++) {
       final ui.Image img = images[i];
 
-      /// This it the dim form the image to be taken from the image
       final src = Rect.fromLTWH(
         0,
         0,
@@ -17,15 +31,12 @@ mixin PaintMixin {
         img.height.toDouble(),
       );
 
-      final ss =
-          dx + (i != 0 ? (i * gapDifference) + (i * imgDiameter) : 0.0) + angle;
-      final a = (ss / (imgRadius)) - (pi / 2);
+      final a = i * anglePerImage + angularDx + toRad(angle); // All in radians
 
       final dst = Rect.fromCircle(
-        center:
-        Offset(s.width / 2, s.height / 2) +
-            Offset.fromDirection(a, imgRadius),
-        radius: 36,
+        center: Offset(s.width / 2, s.height / 2) +
+            Offset.fromDirection(a, imagesRadius),
+        radius: imgRadius,
       );
 
       final imagePaint = Paint()..strokeCap = StrokeCap.round;
@@ -34,5 +45,10 @@ mixin PaintMixin {
       canvas.drawImageRect(img, src, dst, imagePaint);
       canvas.restore();
     }
+
+  }
+
+  double toRad(double degrees) {
+    return degrees * (pi / 180);
   }
 }
